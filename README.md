@@ -1,0 +1,1 @@
+This is a sample project using angular js to create REDDIT clone
