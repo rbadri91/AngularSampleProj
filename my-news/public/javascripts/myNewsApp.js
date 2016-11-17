@@ -1,5 +1,5 @@
 var app = angular.module("myNews",['ui.router']);
-app.factory('posts',[function(){
+app.factory('posts',['$http',function($http){
 	var o ={
 		posts:[
 		 {title: 'post 1', upvotes: 4 ,comments: {}},
@@ -9,6 +9,11 @@ app.factory('posts',[function(){
   {title: 'post 5', upvotes: 5 ,comments: {}}
   ]
 	};
+  o.getAll=function(){
+    return $http.get('/posts').success(function(data){
+      angular.copy(data, o.posts);
+    });
+  };
 	return o;
 }]);
 app.controller('mainController',['$scope','posts',function($scope,posts){
@@ -63,7 +68,12 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
 $stateProvider.state('home',{
 	url :'/home',
 	templateUrl :'/home.html',
-	controller: 'mainController'
+	controller: 'mainController',
+  resolve: {
+    postPromise: ['posts', function(posts){
+      return posts.getAll();
+    }]
+  }
 }).state('posts', {
   url: '/posts/{id}',
   templateUrl: '/posts.html',
