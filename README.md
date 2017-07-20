@@ -1,1 +1,1 @@
-This is a sample project using angular js to create REDDIT clone
+This is a simple project using Angular.js, MongoDB to create REDDIT clone
